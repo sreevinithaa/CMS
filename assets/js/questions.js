@@ -1,10 +1,12 @@
 var inquirer = require("inquirer");
-var Department = require("../lib/Department");
-var Employee = require("../lib/Employee");
-var Role = require("../lib/Role");
+const cTable = require("console.table");
+var Department = require("../../lib/Department");
+var Employee = require("../../lib/Employee");
+var Role = require("../../lib/Role");
 var employee_data_service = require("../../service/employee_data_service");
 var department_data_service = require("../../service/department_data_service");
 var role_data_service = require("../../service/role_data_service");
+
 const option_choices = [
   "View All Employees",
   "Add Employee",
@@ -32,9 +34,12 @@ const mainQuestion = () => {
   ]);
 };
 
-const fk_view_employees = () => {
-  const res = { status: true, message: "Success" };
+const fk_view_employees = async () => {
+  //const res = { status: true, message: "Success" };
+  const [rows, fields] = await employee_data_service.view_employee_ds();
+  const res = { status: true, data: rows };
 
+  console.table(res.data);
   return res;
 };
 const fk_add_employees = () => {
@@ -48,8 +53,9 @@ const fk_update_employees = () => {
   return res;
 };
 const fk_view_roles = () => {
+  //     const service=new role_data_service();
+  //   const res = { status: true, data: service.view_role_ds() };
   const res = { status: true, message: "Success" };
-
   return res;
 };
 const fk_add_roles = () => {
@@ -58,6 +64,8 @@ const fk_add_roles = () => {
   return res;
 };
 const fk_view_department = () => {
+  //     const service=new department_data_service();
+  //   const res = { status: true, data: service.view_department_ds() };
   const res = { status: true, message: "Success" };
 
   return res;

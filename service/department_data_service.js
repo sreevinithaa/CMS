@@ -3,11 +3,13 @@ var Department = require("../lib/Department");
 
 
 
-const add_department_ds = (data) => {
-  db.query("insert into department(name) values(?)", data.name);
+const add_department_ds =async (data) => {
+  const connecion = await db();
+  connecion.query("insert into department(name) values(?)", data.name);
 };
-const view_department_ds = () => {
-  db.query("SELECT * FROM department", function (err, results) {
+const view_department_ds =async () => {
+  const connecion = await db();
+  connecion.query("SELECT * FROM department", function (err, results) {
     if (err) {
       return null;
     } else {

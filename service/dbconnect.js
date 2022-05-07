@@ -1,15 +1,16 @@
-const mysql = require("mysql2");
-const db = mysql.createConnection(
-    {
-      host: "localhost",
-      // MySQL username,
-      user: "dbadmin",
-      // MySQL password
-      password: "1234",
-      database: "crm_db",
-    },
-    console.log(`Connected to the crm_db database.`)
-  );
+const mysql = require("mysql2/promise");
+async function db(){
+
+  return await mysql.createConnection({
+    host: "localhost",
+    // MySQL username,
+    user: "dbadmin",
+    // MySQL password
+    password: "1234",
+    database: "cms_db",
+  });
+
+}
 
   module.exports = {
    db

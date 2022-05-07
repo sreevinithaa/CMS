@@ -1,6 +1,6 @@
 var inquirer = require("inquirer");
 var question = require("./assets/js/questions");
-
+const cTable = require("console.table");
 const ReQuestion = (data) => {
   question.mainQuestion()
   .then((response) => question.loadSecondQuestion(response.option))
