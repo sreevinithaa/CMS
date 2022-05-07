@@ -1,6 +1,10 @@
 var inquirer = require("inquirer");
-const { json } = require("stream/consumers");
-
+var Department = require("../lib/Department");
+var Employee = require("../lib/Employee");
+var Role = require("../lib/Role");
+var employee_data_service = require("../../service/employee_data_service");
+var department_data_service = require("../../service/department_data_service");
+var role_data_service = require("../../service/role_data_service");
 const option_choices = [
   "View All Employees",
   "Add Employee",
