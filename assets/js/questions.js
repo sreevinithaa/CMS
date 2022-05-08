@@ -47,6 +47,58 @@ const add_department_question=async ()=>{
       ]);
 }
 
+
+const add_employee_question=async ()=>{
+    const rows=await role_data_service.view_role_ds().then((results) => {return results[0]});
+    const option_choices_role=rows.map(x => x.title)
+    const rows_1=await employee_data_service.view_employee_ds().then((results) => {return results[0]});
+    const option_choices_manager=rows_1.map(x => x.first_name);
+    option_choices_manager.push("None");
+    return await inquirer.prompt([
+        {
+          type: "input",
+          name: "first_name",
+          message: "what is the employee's first name?",
+         validate(answer) {
+            if (!answer) {
+              return "Please enter the first name!";
+            }
+            return true;
+          },
+        },
+        {
+            type: "input",
+            name: "last_name",
+            message: "what is the employee's last name?",
+           validate(answer) {
+              if (!answer) {
+                return "Please enter the last name!";
+              }
+              return true;
+            },
+          },
+          {
+            type: "list",
+            name: "role",
+            message: "what is the employee's role?",
+            choices: option_choices_role,
+           validate(answer) {
+              if (!answer) {
+                return "Please choose role!";
+              }
+              return true;
+            },
+          },
+          {
+            type: "list",
+            name: "manager",
+            message: "what is the employee's manager?",
+            choices: option_choices_manager,
+          
+          },
+      ]);
+}
+
 const add_role_question=async ()=>{
     const rows=await department_data_service.view_department_ds().then((results) => {return results[0]});
     const option_choices=rows.map(x => x.name)
@@ -95,7 +147,9 @@ const fk_view_employees = async () => {
   console.table(res.data);
   return res;
 };
-const fk_add_employees = () => {
+const fk_add_employees =async () => {
+    await add_employee_question().then(async (data)=>await employee_data_service.add_employee_ds(data)).then((res)=>console.log(`Added ${res} to the database!`)).catch(console.log)
+ 
   const res = { status: true, message: "Success" };
 
   return res;
