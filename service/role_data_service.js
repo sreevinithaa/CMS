@@ -1,16 +1,18 @@
 const { db } = require("../service/dbconnect");
 
-
+const view_role_list=async () => {
+  const connecion = await db();
+  return connecion.query("SELECT role.id as 'value',title as 'name' FROM role ");
+};
 
 const add_role_ds =async (data) => {
 
   const connecion = await db();
-  const obj=await connecion.query("select id from department where name=? LIMIT 1", data.department_id).then((results) => {return results[0]});
-
+  
   connecion.query("insert into role(title,salary,department_id) values(?,?,?)", [
     data.title,
     data.salary,
-    obj[0].id,
+   data.department_id,
   ]);
   return data;
 };
@@ -21,5 +23,6 @@ const view_role_ds =async () => {
 module.exports = {
     add_role_ds,
     view_role_ds,
+    view_role_list,
   };
   

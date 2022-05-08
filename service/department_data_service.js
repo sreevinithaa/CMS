@@ -1,7 +1,10 @@
 const { db } = require("../service/dbconnect");
 
 
-
+const view_department_list =async () => {
+  const connecion = await db();
+  return connecion.query("SELECT id as 'value',name FROM department");
+};
 
 const add_department_ds =async ({name}) => {
   
@@ -16,5 +19,6 @@ const view_department_ds =async () => {
 module.exports = {
     add_department_ds,
     view_department_ds,
+    view_department_list,
   };
   
