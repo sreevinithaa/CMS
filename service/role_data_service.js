@@ -1,4 +1,4 @@
-const db = require("../service/dbconnect");
+const { db } = require("../service/dbconnect");
 
 var Role = require("../lib/Role");
 
@@ -14,15 +14,7 @@ const add_role_ds =async (data) => {
 };
 const view_role_ds =async () => {
   const connecion = await db();
-  connecion.query("SELECT * FROM role join department on department_id=department.id", function (err, results) {
-    if (err) {
-      return null;
-    } else {
-      var normalResults = results.map((mysqlObj, index) => {
-        return Object.assign ({}, mysqlObj);
-      });
-    }
-  });
+  return connecion.query("SELECT role.id,title,salary,department.name as 'department' FROM role join department on department_id=department.id");
 };
 module.exports = {
     add_role_ds,

@@ -12,7 +12,9 @@ const add_employee_ds =async (data) => {
 
 const view_employee_ds =async () => {
   const connecion = await db();
-  return connecion.query("SELECT * FROM employee");
+  return connecion.query(`SELECT employee.id,first_name,last_name,role.title as 'role',department.name as 'department' FROM employee 
+  join role on role_id=role.id
+  join department on department_id=department.id`);
 };
 module.exports = {
   add_employee_ds,

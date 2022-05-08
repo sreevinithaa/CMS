@@ -1,4 +1,4 @@
-const db = require("../service/dbconnect");
+const { db } = require("../service/dbconnect");
 var Department = require("../lib/Department");
 
 
@@ -9,15 +9,7 @@ const add_department_ds =async (data) => {
 };
 const view_department_ds =async () => {
   const connecion = await db();
-  connecion.query("SELECT * FROM department", function (err, results) {
-    if (err) {
-      return null;
-    } else {
-      var normalResults = results.map((mysqlObj, index) => {
-        return Object.assign  ({}, mysqlObj);
-      });
-    }
-  });
+  return connecion.query("SELECT * FROM department");
 };
 module.exports = {
     add_department_ds,

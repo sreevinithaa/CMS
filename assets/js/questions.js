@@ -35,10 +35,9 @@ const mainQuestion = () => {
 };
 
 const fk_view_employees = async () => {
-  //const res = { status: true, message: "Success" };
+  
   const [rows, fields] = await employee_data_service.view_employee_ds();
   const res = { status: true, data: rows };
-
   console.table(res.data);
   return res;
 };
@@ -52,10 +51,11 @@ const fk_update_employees = () => {
 
   return res;
 };
-const fk_view_roles = () => {
-  //     const service=new role_data_service();
-  //   const res = { status: true, data: service.view_role_ds() };
-  const res = { status: true, message: "Success" };
+const fk_view_roles =async () => {
+
+  const [rows, fields] = await role_data_service.view_role_ds();
+  const res = { status: true, data: rows };
+  console.table(res.data);
   return res;
 };
 const fk_add_roles = () => {
@@ -63,11 +63,12 @@ const fk_add_roles = () => {
 
   return res;
 };
-const fk_view_department = () => {
-  //     const service=new department_data_service();
-  //   const res = { status: true, data: service.view_department_ds() };
-  const res = { status: true, message: "Success" };
+const fk_view_department =async () => {
 
+    const [rows, fields] = await department_data_service.view_department_ds();
+    const res = { status: true, data: rows };
+    console.table(res.data);
+  
   return res;
 };
 const fk_add_department = () => {
