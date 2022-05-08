@@ -1,6 +1,6 @@
 const { db } = require("../service/dbconnect");
 
-var Employee = require("../lib/Employee");
+
 
 const add_employee_ds =async (data) => {
   const connecion = await db();

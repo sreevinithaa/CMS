@@ -1,11 +1,13 @@
 const { db } = require("../service/dbconnect");
-var Department = require("../lib/Department");
 
 
 
-const add_department_ds =async (data) => {
+
+const add_department_ds =async ({name}) => {
+  
   const connecion = await db();
-  connecion.query("insert into department(name) values(?)", data.name);
+  await connecion.query("insert into department(name) values(?)", name);
+  return name;
 };
 const view_department_ds =async () => {
   const connecion = await db();

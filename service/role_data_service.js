@@ -1,16 +1,18 @@
 const { db } = require("../service/dbconnect");
 
-var Role = require("../lib/Role");
 
 
 const add_role_ds =async (data) => {
 
   const connecion = await db();
+  const obj=await connecion.query("select id from department where name=? LIMIT 1", data.department_id).then((results) => {return results[0]});
+
   connecion.query("insert into role(title,salary,department_id) values(?,?,?)", [
     data.title,
     data.salary,
-    data.department_id,
+    obj[0].id,
   ]);
+  return data;
 };
 const view_role_ds =async () => {
   const connecion = await db();
