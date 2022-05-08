@@ -59,8 +59,8 @@ Run the following command at th root of your project and answer the prompted que
 
 ## Vedio of functionality
 
-![CMS gif link](./src/assets/img/Employee_CMS_Demo.gif)<br>
-The full movie file showing functionality of the application can be found [here](https://sreevinithaa.github.io/CMS/src/assets/vedio/Employee_CMS_Demo.mp4)
+![CMS gif link](./assets/img/Employee_CMS_Demo.gif)<br>
+The full movie file showing functionality of the application can be found [here](https://sreevinithaa.github.io/CMS/assets/vedio/Employee_CMS_Demo.mp4)
 
 
 
