@@ -4,11 +4,11 @@ var employee_data_service = require("../../service/employee_data_service");
 var department_data_service = require("../../service/department_data_service");
 var role_data_service = require("../../service/role_data_service");
 
-
 const option_choices = [
   "View All Employees",
   "Add Employee",
   "Update Employee Role",
+  "Update employee managers",
   "View All roles",
   "Add Role",
   "View All departments",
@@ -47,18 +47,102 @@ const add_department_question = async () => {
   ]);
 };
 
-const add_employee_question = async () => {
-  const option_choices_role = await role_data_service.view_role_list().then((results) => {
-    return results[0];
-  });
+const update_employee_manager_question=async () => {
+
   
+    const option_choices_manager = await employee_data_service
+      .get_manager()
+      .then((results) => {
+        return results[0];
+      });
+      const option_choices_employee=option_choices_manager;
+    
+      return await inquirer.prompt([
+        {
+          type: "list",
+          name: "id",
+          message: "Which employee's manager do you want to update?",
+          choices: option_choices_employee,
+          validate(answer) {
+            if (!answer) {
+              return "Please select employee!";
+            }
+            else{
+                option_choices_manager.splice(option_choices_employee.findIndex(m=>m.value==answer));
+                console.log(option_choices_manager);
+            }
+            return true;
+          },
+        },
+        {
+          type: "list",
+          name: "manager",
+          message: "which manager do you want to assign the selected employee?",
+          choices: option_choices_manager,
+          validate(answer) {
+            if (!answer) {
+              return "Please choose the manager!";
+            }
+            return true;
+          },
+        },
+        
+      ]);
+    }  
+const update_employee_role_question=async () => {
+    const option_choices_role = await role_data_service
+      .view_role_list()
+      .then((results) => {
+        return results[0];
+      });
+  
+    const option_choices_manager = await employee_data_service
+      .get_manager()
+      .then((results) => {
+        return results[0];
+      });
+      return await inquirer.prompt([
+        {
+          type: "list",
+          name: "id",
+          message: "Which employee's role do you want to update?",
+          choices: option_choices_manager,
+          validate(answer) {
+            if (!answer) {
+              return "Please select employee!";
+            }
+            return true;
+          },
+        },
+        {
+          type: "list",
+          name: "role",
+          message: "which role do you want to assign the selected employee?",
+          choices: option_choices_role,
+          validate(answer) {
+            if (!answer) {
+              return "Please choose role!";
+            }
+            return true;
+          },
+        },
+        
+      ]);
+    }  
+const add_employee_question = async () => {
+  const option_choices_role = await role_data_service
+    .view_role_list()
+    .then((results) => {
+      return results[0];
+    });
+
   const option_choices_manager = await employee_data_service
     .get_manager()
     .then((results) => {
       return results[0];
     });
-  
-  option_choices_manager.push({  value: null,name: "None" });
+
+  option_choices_manager.push({ value: null, name: "None" });
   //console.log(option_choices_manager);
   return await inquirer.prompt([
     {
@@ -110,7 +194,7 @@ const add_role_question = async () => {
     .then((results) => {
       return results[0];
     });
-  
+
   return await inquirer.prompt([
     {
       type: "input",
@@ -128,8 +212,13 @@ const add_role_question = async () => {
       name: "salary",
       message: "what is the salary of the role?",
       validate(answer) {
+          const rajex=/^\d+(\.\d{1,2})?$/;
         if (!answer) {
           return "Please enter the salary!";
+        }
+        if(!rajex.test(answer))
+        {
+            return "Please enter valid salary!";
         }
         return true;
       },
@@ -166,7 +255,21 @@ const fk_add_employees = async () => {
 
   return res;
 };
-const fk_update_employees = () => {
+
+const fk_update_employee_manager =async () => {
+    await update_employee_manager_question()
+    .then(async (data) => await employee_data_service.update_employee_manager_ds(data))
+    .then((res) => console.log(`Update employee's manager to the database!`))
+    .catch(console.log);
+  const res = { status: true, message: "Success" };
+
+  return res;
+};
+const fk_update_employee_role =async () => {
+    await update_employee_role_question()
+    .then(async (data) => await employee_data_service.update_employee_ds(data))
+    .then((res) => console.log(`Update employee's role to the database!`))
+    .catch(console.log);
   const res = { status: true, message: "Success" };
 
   return res;
@@ -217,8 +320,11 @@ const loadSecondQuestion = (selected_option) => {
       obj = fk_add_employees();
       break;
     case "Update Employee Role":
-      obj = fk_update_employees();
+      obj = fk_update_employee_role();
       break;
+      case "Update employee managers":
+        obj = fk_update_employee_manager();
+        break;      
     case "View All roles":
       obj = fk_view_roles();
       break;

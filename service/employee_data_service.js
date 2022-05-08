@@ -1,38 +1,58 @@
 const { db } = require("../service/dbconnect");
 
-
-const get_manager=async () => {
+const get_manager = async () => {
   const connecion = await db();
-  return connecion.query(`SELECT id as 'value',CONCAT(first_name, ' ',  last_name) as 'name'  FROM employee `);
+  return connecion.query(
+    `SELECT id as 'value',CONCAT(first_name, ' ',  last_name) as 'name'  FROM employee `
+  );
 };
-const add_employee_ds =async (data) => {
+const add_employee_ds = async (data) => {
   const connecion = await db();
 
-  if(data.manager!=null)
-  {
-    const obj_manager=await connecion.query("select id from employee where first_name=? LIMIT 1", data.manager).then((results) => {return results[0]});
+  if (data.manager != null) {
+  
     connecion.query(
       "insert into employee(first_name,last_name,role_id,manager_id) values(?,?,?,?)",
       [data.first_name, data.last_name, data.role, data.manager]
     );
-  }
-  else{
+  } else {
     connecion.query(
       "insert into employee(first_name,last_name,role_id) values(?,?,?,?)",
       [data.first_name, data.last_name, data.role]
     );
   }
- return data.first_name+" "+data.last_name;
+  return data.first_name + " " + data.last_name;
+};
+const update_employee_ds = async (data) => {
+  const connecion = await db();  
+    connecion.query(
+      "update employee set role_id=? where id=?",
+      [data.role, data.id]
+    );
+  
+  return data;
+};
+const update_employee_manager_ds = async (data) => {
+  const connecion = await db();  
+    connecion.query(
+      "update employee set manager_id=? where id=?",
+      [data.manager, data.id]
+    );
+  
+  return data;
 };
 
-const view_employee_ds =async () => {
+const view_employee_ds = async () => {
   const connecion = await db();
-  return connecion.query(`SELECT employee.id,first_name,last_name,role.title as 'role',department.name as 'department' FROM employee 
+  return connecion.query(`SELECT employee.id,employee.first_name,employee.last_name,role.title as 'role',department.name as 'department',CONCAT(COALESCE(emp.first_name,''), ' ',  COALESCE(emp.last_name,'')) as 'Manager' FROM employee 
   join role on role_id=role.id
-  join department on department_id=department.id`);
+  join department on department_id=department.id
+  LEFT JOIN employee emp on employee.manager_id=emp.id`);
 };
 module.exports = {
   add_employee_ds,
   view_employee_ds,
   get_manager,
+  update_employee_ds,
+  update_employee_manager_ds
 };
