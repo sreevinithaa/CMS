@@ -12,6 +12,8 @@ const option_choices = [
   "Add Role",
   "View All departments",
   "Add Department",
+  "View the total utilized budget of a department",
+  "View Employees By Manager",
   "Quit",
 ];
 
@@ -39,6 +41,9 @@ const loadSecondQuestion = (selected_option) => {
     case "View All Employees":
       obj = functionality.fk_view_employees();
       break;
+      case "View Employees By Manager":
+        obj = functionality.fk_view_employees_by_manager();
+        break;
     case "Add Employee":
       obj = functionality.fk_add_employees();
       break;
@@ -60,6 +65,9 @@ const loadSecondQuestion = (selected_option) => {
     case "Add Department":
       obj = functionality.fk_add_department();
       break;
+      case "View the total utilized budget of a department":
+        obj = functionality.fk_view_budget();
+        break;      
     case "Quit":
       obj = {
         status: false,

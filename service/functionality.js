@@ -1,5 +1,5 @@
 
-
+var inquirer = require("inquirer");
 
 var employee_data_service = require("./employee_data_service");
 
@@ -67,6 +67,31 @@ const add_department_question = async () => {
         ]);
       }  
   
+      const view_employee_by_manager_question=async () => {
+        const option_choices_manager = await employee_data_service
+          .get_assign_manager()
+          .then((results) => {
+            return results[0];
+          });
+      
+       
+          return await inquirer.prompt([
+            {
+              type: "list",
+              name: "id",
+              message: "Choose the manager to display his employees?",
+              choices: option_choices_manager,
+              validate(answer) {
+                if (!answer) {
+                  return "Please select manager!";
+                }
+                return true;
+              },
+            },
+            
+            
+          ]);
+        }  
   const update_employee_role_question=async () => {
       const option_choices_role = await role_data_service
         .view_role_list()
@@ -227,6 +252,15 @@ const fk_view_employees = async () => {
     console.table(res.data);
     return res;
   };
+  const fk_view_employees_by_manager = async () => {
+    await view_employee_by_manager_question()
+    .then(async (data) => await employee_data_service.view_employee_by_manager_ds(data))
+    .then((res) => console.table(res[0]))
+    .catch(console.log);
+    const res = { status: true, data: "success!" };
+    
+    return res;
+  };
   
   const fk_add_employees = async () => {
     await add_employee_question()
@@ -297,7 +331,16 @@ const fk_view_employees = async () => {
   
     return res;
   };
+  const fk_view_budget = async () => {
+    const [rows, fields] = await employee_data_service
+    .view_edepartment_budget_ds()
+    .catch(console.log);
+  const res = { status: true, data: rows };
+  console.table(res.data);
+    
+    return res;
+  };
   module.exports = {
-    fk_view_employees,fk_add_employees,fk_update_employee_manager,fk_update_employee_role,fk_view_roles,  fk_add_roles,
-        fk_view_department,fk_add_department
+    fk_view_budget,fk_view_employees,fk_add_employees,fk_update_employee_manager,fk_update_employee_role,fk_view_roles,  fk_add_roles,
+        fk_view_department,fk_add_department,fk_view_employees_by_manager
   }
