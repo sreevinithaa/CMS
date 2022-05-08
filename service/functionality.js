@@ -92,6 +92,32 @@ const add_department_question = async () => {
             
           ]);
         }  
+
+        const view_employee_by_department_question=async () => {
+            const option_choices_deparment = await department_data_service
+              .view_department_list()
+              .then((results) => {
+                return results[0];
+              });
+          
+           
+              return await inquirer.prompt([
+                {
+                  type: "list",
+                  name: "id",
+                  message: "Choose the department to display the employees?",
+                  choices: option_choices_deparment,
+                  validate(answer) {
+                    if (!answer) {
+                      return "Please select department!";
+                    }
+                    return true;
+                  },
+                },
+                
+                
+              ]);
+            }  
   const update_employee_role_question=async () => {
       const option_choices_role = await role_data_service
         .view_role_list()
@@ -261,6 +287,15 @@ const fk_view_employees = async () => {
     
     return res;
   };
+  const fk_view_employees_by_department = async () => {
+    await view_employee_by_department_question()
+    .then(async (data) => await employee_data_service.view_employee_by_department_ds(data))
+    .then((res) => console.table(res[0]))
+    .catch(console.log);
+    const res = { status: true, data: "success!" };
+    
+    return res;
+  };
   
   const fk_add_employees = async () => {
     await add_employee_question()
@@ -342,5 +377,5 @@ const fk_view_employees = async () => {
   };
   module.exports = {
     fk_view_budget,fk_view_employees,fk_add_employees,fk_update_employee_manager,fk_update_employee_role,fk_view_roles,  fk_add_roles,
-        fk_view_department,fk_add_department,fk_view_employees_by_manager
+        fk_view_department,fk_add_department,fk_view_employees_by_manager,fk_view_employees_by_department
   }

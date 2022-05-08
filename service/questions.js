@@ -2,7 +2,6 @@ var inquirer = require("inquirer");
 
 var functionality = require("./functionality.js");
 
-
 const option_choices = [
   "View All Employees",
   "Add Employee",
@@ -14,6 +13,7 @@ const option_choices = [
   "Add Department",
   "View the total utilized budget of a department",
   "View Employees By Manager",
+  "View Employees By Department",
   "Quit",
 ];
 
@@ -34,25 +34,27 @@ const mainQuestion = async () => {
   ]);
 };
 
-
 const loadSecondQuestion = (selected_option) => {
   let obj;
   switch (selected_option) {
     case "View All Employees":
       obj = functionality.fk_view_employees();
       break;
-      case "View Employees By Manager":
-        obj = functionality.fk_view_employees_by_manager();
-        break;
+    case "View Employees By Manager":
+      obj = functionality.fk_view_employees_by_manager();
+      break;
+    case "View Employees By Department":
+      obj = functionality.fk_view_employees_by_department();
+      break;
     case "Add Employee":
       obj = functionality.fk_add_employees();
       break;
     case "Update Employee Role":
       obj = functionality.fk_update_employee_role();
       break;
-      case "Update employee managers":
-        obj = functionality.fk_update_employee_manager();
-        break;      
+    case "Update employee managers":
+      obj = functionality.fk_update_employee_manager();
+      break;
     case "View All roles":
       obj = functionality.fk_view_roles();
       break;
@@ -65,9 +67,9 @@ const loadSecondQuestion = (selected_option) => {
     case "Add Department":
       obj = functionality.fk_add_department();
       break;
-      case "View the total utilized budget of a department":
-        obj = functionality.fk_view_budget();
-        break;      
+    case "View the total utilized budget of a department":
+      obj = functionality.fk_view_budget();
+      break;
     case "Quit":
       obj = {
         status: false,
