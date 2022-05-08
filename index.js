@@ -1,5 +1,5 @@
 var inquirer = require("inquirer");
-var question = require("./assets/js/questions");
+var question = require("./service/questions");
 
 const ReQuestion = (data) => {
   question.mainQuestion()
