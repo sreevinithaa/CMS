@@ -2,6 +2,7 @@ var inquirer = require("inquirer");
 
 var functionality = require("./functionality.js");
 
+//The options/functionality list array
 const option_choices = [
   "View All Employees",
   "Add Employee",
@@ -17,6 +18,7 @@ const option_choices = [
   "Quit",
 ];
 
+// the main prompt
 const mainQuestion = async () => {
   return await inquirer.prompt([
     {
@@ -34,6 +36,7 @@ const mainQuestion = async () => {
   ]);
 };
 
+//based on the option choosen from main prompt this will load second prompt
 const loadSecondQuestion = (selected_option) => {
   let obj;
   switch (selected_option) {

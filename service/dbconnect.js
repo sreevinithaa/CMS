@@ -1,6 +1,7 @@
 const mysql = require("mysql2/promise");
-async function db(){
 
+//database connection
+async function db() {
   return await mysql.createConnection({
     host: "localhost",
     // MySQL username,
@@ -9,10 +10,8 @@ async function db(){
     password: "1234",
     database: "cms_db",
   });
-
 }
 
-  module.exports = {
-   db
-  };
-  
+module.exports = {
+  db,
+};

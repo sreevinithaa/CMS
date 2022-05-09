@@ -1,13 +1,16 @@
 var inquirer = require("inquirer");
 var question = require("./service/questions");
 
+
 const ReQuestion = (data) => {
   question.mainQuestion()
   .then((response) => question.loadSecondQuestion(response.option))
     .then((res) => {
       if (res.status) {
+        //if user choose functionality option
         ReQuestion();
       } else {
+        //if user choose Quit option
         console.log(res.message);
       }
     })
@@ -16,15 +19,16 @@ const ReQuestion = (data) => {
 
 function init() {
   question
-    .mainQuestion()
-    // Use writeFileSync method to use promises instead of a callback function
+    .mainQuestion()    
     .then((response) => question.loadSecondQuestion(response.option))
     .then(
       (res) => {
-       // console.log(res);
+      
         if (res.status) {
+          //if user choose functionality option
           ReQuestion();
         } else {
+          //if user choose Quit option
           console.log(res.message);
         }
       },
